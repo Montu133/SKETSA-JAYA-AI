@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKETSA JAYA AI - Chat Modern</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --bg-darker: #0d0d0d;
+            --bg-card: #1e1e1e;
+            --bg-input: #2d2d2d;
+            --primary: #bb86fc;
+            --primary-light: #d0b4ff;
+            --secondary: #03dac6;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --error: #f44336;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .watermark {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        .watermark strong {
+            color: var(--primary-light);
+        }
+
+        .main-content {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .settings-panel {
+            background-color: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary-light);
+        }
+
+        .panel-title i {
+            font-size: 20px;
+        }
+
+        .api-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .api-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: var(--bg-input);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .api-option:hover {
+            background-color: rgba(187, 134, 252, 0.1);
+        }
+
+        .api-option.active {
+            border-color: var(--primary);
+            background-color: rgba(187, 134, 252, 0.15);
+        }
+
+        .api-option.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .api-option i {
+            font-size: 24px;
+            margin-right: 12px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .gemini i {
+            color: #00a6ff;
+        }
+
+        .chatgpt i {
+            color: #10a37f;
+        }
+
+        .api-info {
+            flex: 1;
+        }
+
+        .api-info h3 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .api-info p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--success);
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-card);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .chat-history {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 15px 20px;
+            border-radius: 18px;
+            line-height: 1.5;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, var(--primary), #7b1fa2);
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .ai-message {
+            background-color: var(--bg-input);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .message-header i {
+            font-size: 16px;
+        }
+
+        .user-message .message-header {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .ai-message .message-header {
+            color: var(--primary);
+        }
+
+        .message-content {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .message-content pre {
+            background-color: var(--bg-dark);
+            padding: 10px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .message-content code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+
+        .input-container {
+            display: flex;
+            padding: 15px;
+            background-color: var(--bg-darker);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            gap: 10px;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 14px 20px;
+            background-color: var(--bg-input);
+            border: none;
+            border-radius: 50px;
+            color: var(--text-primary);
+            font-size: 16px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .message-input:focus {
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .send-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 18px;
+        }
+
+        .send-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(187, 134, 252, 0.5);
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--bg-input);
+            border-radius: 18px;
+            align-self: flex-start;
+            margin-top: 10px;
+            gap: 8px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--text-secondary);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .settings-panel {
+                width: 100%;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-robot"></i>
+                <h1>SKETSA JAYA AI</h1>
+            </div>
+            <div class="watermark">
+                Dibuat oleh <strong>Gede Arta</strong> dari 10 PH 6
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <div class="settings-panel">
+                <div class="panel-title">
+                    <i class="fas fa-plug"></i>
+                    <span>PILIH API</span>
+                </div>
+                
+                <div class="api-selector">
+                    <div class="api-option gemini active" data-api="gemini">
+                        <i class="fab fa-google"></i>
+                        <div class="api-info">
+                            <h3>Gemini AI</h3>
+                            <p>Model canggih dari Google</p>
+                        </div>
+                        <div class="status-indicator"></div>
+                    </div>
+                    
+                    <div class="api-option chatgpt" data-api="chatgpt1">
+                        <i class="fas fa-comment"></i>
+                        <div class="api-info">
+                            <h3>ChatGPT API 1</h3>
+                            <p>GPT-4 Turbo</p>
+                        </div>
+                        <div class="status-indicator"></div>
+                    </div>
+                    
+                    <div class="api-option chatgpt" data-api="chatgpt2">
+                        <i class="fas fa-comment"></i>
+                        <div class="api-info">
+                            <h3>ChatGPT API 2</h3>
+                            <p>GPT-3.5 Turbo</p>
+                        </div>
+                        <div class="status-indicator"></div>
+                    </div>
+                </div>
+                
+                <div class="panel-title">
+                    <i class="fas fa-info-circle"></i>
+                    <span>INFORMASI</span>
+                </div>
+                
+                <div class="api-info-card">
+                    <p style="font-size: 14px; line-height: 1.6; color: var(--text-secondary);">
+                        Pilih provider AI yang ingin digunakan. Setiap provider memiliki karakteristik respons yang berbeda.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="chat-container">
+                <div class="chat-history" id="chatHistory">
+                    <div class="message ai-message">
+                        <div class="message-header">
+                            <i class="fas fa-robot"></i>
+                            <span>SKETSA JAYA AI</span>
+                        </div>
+                        <div class="message-content">
+                            Halo! Saya SKETSA JAYA AI. Silakan pilih provider AI yang ingin Anda gunakan di panel sebelah kiri, lalu mulai percakapan dengan saya.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-container">
+                    <input type="text" class="message-input" id="messageInput" placeholder="Ketik pesan Anda..." autocomplete="off">
+                    <button class="send-button" id="sendButton">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            &copy; 2024 SKETSA JAYA AI | Dibuat oleh Gede Arta - 10 PH 6 | Semua API Key terhubung dengan akun Anda
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
