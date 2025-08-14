@@ -1,4 +1,4 @@
-// Konfigurasi API
+// Konfigurasi AP
 const API_CONFIG = {
     gemini: {
         name: "Gemini AI",
