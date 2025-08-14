@@ -155,12 +155,20 @@
             text-align: center;
         }
 
-        .gemini i {
+        .chatgpt i {
+            color: #10a37f;
+        }
+
+        .wotty i {
             color: #00a6ff;
         }
 
-        .chatgpt i {
-            color: #10a37f;
+        .blackbox i {
+            color: #ff5722;
+        }
+
+        .metaai i {
+            color: #0084ff;
         }
 
         .api-info {
@@ -391,29 +399,47 @@
                 </div>
                 
                 <div class="api-selector">
-                    <div class="api-option gemini active" data-api="gemini">
-                        <i class="fab fa-google"></i>
+                    <div class="api-option chatgpt active" data-api="chatgpt35">
+                        <i class="fas fa-comment"></i>
                         <div class="api-info">
-                            <h3>Gemini AI</h3>
-                            <p>Model canggih dari Google</p>
+                            <h3>ChatGPT 3.5</h3>
+                            <p>Versi gratis 3.5 Turbo</p>
                         </div>
                         <div class="status-indicator"></div>
                     </div>
                     
-                    <div class="api-option chatgpt" data-api="chatgpt1">
+                    <div class="api-option chatgpt" data-api="chatgpt4">
                         <i class="fas fa-comment"></i>
                         <div class="api-info">
-                            <h3>ChatGPT API 1</h3>
-                            <p>GPT-4 Turbo</p>
+                            <h3>ChatGPT 4</h3>
+                            <p>Versi gratis GPT-4</p>
                         </div>
                         <div class="status-indicator"></div>
                     </div>
                     
-                    <div class="api-option chatgpt" data-api="chatgpt2">
-                        <i class="fas fa-comment"></i>
+                    <div class="api-option wotty" data-api="wotty">
+                        <i class="fas fa-robot"></i>
                         <div class="api-info">
-                            <h3>ChatGPT API 2</h3>
-                            <p>GPT-3.5 Turbo</p>
+                            <h3>Wotty AI</h3>
+                            <p>Model khusus Wotty</p>
+                        </div>
+                        <div class="status-indicator"></div>
+                    </div>
+                    
+                    <div class="api-option blackbox" data-api="blackbox">
+                        <i class="fas fa-box"></i>
+                        <div class="api-info">
+                            <h3>BlackBox</h3>
+                            <p>AI untuk developer</p>
+                        </div>
+                        <div class="status-indicator"></div>
+                    </div>
+                    
+                    <div class="api-option metaai" data-api="metaai">
+                        <i class="fab fa-meta"></i>
+                        <div class="api-info">
+                            <h3>Meta AI</h3>
+                            <p>AI dari Meta</p>
                         </div>
                         <div class="status-indicator"></div>
                     </div>
@@ -426,7 +452,7 @@
                 
                 <div class="api-info-card">
                     <p style="font-size: 14px; line-height: 1.6; color: var(--text-secondary);">
-                        Pilih provider AI yang ingin digunakan. Setiap provider memiliki karakteristik respons yang berbeda.
+                        Pilih provider AI yang ingin digunakan. Semua API menggunakan koneksi ke RequimeBoost.id dengan API Key Anda.
                     </p>
                 </div>
             </div>
@@ -439,7 +465,7 @@
                             <span>SKETSA JAYA AI</span>
                         </div>
                         <div class="message-content">
-                            Halo! Saya SKETSA JAYA AI. Silakan pilih provider AI yang ingin Anda gunakan di panel sebelah kiri, lalu mulai percakapan dengan saya.
+                            Halo! Saya SKETSA JAYA AI yang terhubung dengan RequimeBoost.id. Silakan pilih provider AI di panel sebelah kiri, lalu mulai percakapan dengan saya.
                         </div>
                     </div>
                 </div>
@@ -454,7 +480,7 @@
         </div>
         
         <footer>
-            &copy; 2024 SKETSA JAYA AI | Dibuat oleh Gede Arta - 10 PH 6 | Semua API Key terhubung dengan akun Anda
+            &copy; 2024 SKETSA JAYA AI | Dibuat oleh Gede Arta - 10 PH 6 | Terhubung dengan RequimeBoost.id
         </footer>
     </div>
 
